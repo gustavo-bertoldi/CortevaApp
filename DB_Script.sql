@@ -264,10 +264,6 @@ CREATE TABLE [ole_unplanned_event_cips] (
   [kind] int not null default 1
 );
 
---
--- Déchargement des données de la table `ole_unplanned_event_cips`
---
-
 INSERT INTO [ole_unplanned_event_cips] (created_at, updated_at, OLE, previous_bulk, predicted_duration, total_duration, comment, productionline, type, kind) VALUES
 ('2021-11-03 15:47:20', '2021-11-03 15:47:20', 'testMedanLigne1', 'prevBulk', 5, 35, 'CIP', 'Medan1', 'CIP', 1),
 ('2021-11-03 16:12:48', '2021-11-03 16:12:48', 'testMedanLigne1', 'PREV', 5, 10, NULL, 'Medan1', 'CIP', 1),
@@ -289,24 +285,108 @@ CREATE TABLE [ole_unplanned_event_unplanned_downtimes] (
   [kind] int not null default 1
 );
 
---
--- Déchargement des données de la table `ole_unplanned_event_unplanned_downtimes`
---
+INSERT INTO [ole_unplanned_event_unplanned_downtimes] (created_at, updated_at, OLE, productionline, implicated_machine, component, total_duration, comment, type, kind) VALUES
+('2021-11-19 15:54:29', '2021-10-26 12:28:35', 'testPOMedan1', 'Medan1', 'Autres', 'Autres', 20, 'Labelling Box Manual', 'unplannedDowntime', 1),
+('2021-11-19 15:54:35', '2021-10-26 12:29:04', 'testPOMedan1', 'Medan1', 'Autres', 'Autres', 25, 'Weighing error', 'unplannedDowntime', 1),
+('2021-11-19 15:54:43', '2021-10-26 13:02:11', 'testPOMedan3', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 70, 'Label Stuck in the Servo 3 time', 'unplannedDowntime', 1),
+('2021-11-19 15:54:49', '2021-10-26 13:02:48', 'testPOMedan3', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 75, 'Change roll label and setting 5 time', 'unplannedDowntime', 1),
+('2021-11-19 15:54:51', '2021-10-26 14:11:23', 'testPOMedan2', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 20, 'Label broken', 'unplannedDowntime', 1),
+('2021-11-19 15:54:54', '2021-10-26 14:11:46', 'testPOMedan2', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 15, 'Label Zigzag', 'unplannedDowntime', 1),
+('2021-11-19 15:54:41', '2021-10-28 12:30:42', 'testPOMedan4', 'Medan1', 'Bol bouchon', 'Bol bouchon', 90, 'Sensor bottle reject Failure', 'unplannedDowntime', 1),
+('2021-11-19 15:55:01', '2021-10-28 12:31:35', 'testPOMedan4', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 72, 'Change Roll Label 12 time', 'unplannedDowntime', 1),
+('2021-11-19 15:55:08', '2021-10-28 13:00:26', 'testPOMedan5', 'Medan1', 'Tourelle de vissage', 'Tourelle de vissage', 95, 'Manual failing and check capping process', 'unplannedDowntime', 1),
+('2021-11-19 15:54:38', '2021-10-28 13:01:11', 'testPOMedan5', 'Medan1', 'Autres', 'Autres', 25, 'Setting capper filling machine and tooling', 'unplannedDowntime', 1),
+('2021-11-19 15:55:03', '2021-11-03 17:40:16', 'testMedanLigne1', 'Medan1', 'other', 'other', 120, NULL, 'unplannedDowntime', 1),
+('2021-11-19 15:55:06', '2021-11-03 17:49:16', 'testMedanLigne1', 'Medan1', 'screwingTurret', 'screwingTurret', 120, NULL, 'unplannedDowntime', 1),
+('2021-11-20 09:49:58', '2021-11-20 09:49:58', 'nouveauPODETest', 'Medan1', 'other', 'other', 95, 'Manual Filling and Check Capping Process', 'unplannedDowntime', 1),
+('2021-11-20 09:50:24', '2021-11-20 09:50:24', 'nouveauPODETest', 'Medan1', 'other', 'other', 25, 'Setting Capper', 'unplannedDowntime', 1),
+('2021-11-20 09:50:52', '2021-11-20 09:50:52', 'nouveauPODETest', 'Medan1', 'other', 'other', 20, 'Batchnumber', 'unplannedDowntime', 1),
+('2021-11-20 09:51:26', '2021-11-20 09:51:26', 'nouveauPODETest', 'Medan1', 'other', 'other', 30, 'Slip Servo', 'unplannedDowntime', 1);
 
-INSERT INTO `ole_unplanned_event_unplanned_downtimes` (`id`, `created_at`, `updated_at`, `OLE`, `productionline`, `implicated_machine`, `component`, `total_duration`, `comment`, `type`, `kind`) VALUES
-(5, '2021-11-19 15:54:29', '2021-10-26 12:28:35', 'testPOMedan1', 'Medan1', 'Autres', 'Autres', 20, 'Labelling Box Manual', 'unplannedDowntime', 1),
-(6, '2021-11-19 15:54:35', '2021-10-26 12:29:04', 'testPOMedan1', 'Medan1', 'Autres', 'Autres', 25, 'Weighing error', 'unplannedDowntime', 1),
-(7, '2021-11-19 15:54:43', '2021-10-26 13:02:11', 'testPOMedan3', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 70, 'Label Stuck in the Servo 3 time', 'unplannedDowntime', 1),
-(8, '2021-11-19 15:54:49', '2021-10-26 13:02:48', 'testPOMedan3', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 75, 'Change roll label and setting 5 time', 'unplannedDowntime', 1),
-(9, '2021-11-19 15:54:51', '2021-10-26 14:11:23', 'testPOMedan2', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 20, 'Label broken', 'unplannedDowntime', 1),
-(10, '2021-11-19 15:54:54', '2021-10-26 14:11:46', 'testPOMedan2', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 15, 'Label Zigzag', 'unplannedDowntime', 1),
-(12, '2021-11-19 15:54:41', '2021-10-28 12:30:42', 'testPOMedan4', 'Medan1', 'Bol bouchon', 'Bol bouchon', 90, 'Sensor bottle reject Failure', 'unplannedDowntime', 1),
-(13, '2021-11-19 15:55:01', '2021-10-28 12:31:35', 'testPOMedan4', 'Medan1', 'Etiqueteuse bouteille', 'Saturation aval', 72, 'Change Roll Label 12 time', 'unplannedDowntime', 1),
-(14, '2021-11-19 15:55:08', '2021-10-28 13:00:26', 'testPOMedan5', 'Medan1', 'Tourelle de vissage', 'Tourelle de vissage', 95, 'Manual failing and check capping process', 'unplannedDowntime', 1),
-(15, '2021-11-19 15:54:38', '2021-10-28 13:01:11', 'testPOMedan5', 'Medan1', 'Autres', 'Autres', 25, 'Setting capper filling machine and tooling', 'unplannedDowntime', 1),
-(16, '2021-11-19 15:55:03', '2021-11-03 17:40:16', 'testMedanLigne1', 'Medan1', 'other', 'other', 120, NULL, 'unplannedDowntime', 1),
-(17, '2021-11-19 15:55:06', '2021-11-03 17:49:16', 'testMedanLigne1', 'Medan1', 'screwingTurret', 'screwingTurret', 120, NULL, 'unplannedDowntime', 1),
-(19, '2021-11-20 09:49:58', '2021-11-20 09:49:58', 'nouveauPODETest', 'Medan1', 'other', 'other', 95, 'Manual Filling and Check Capping Process', 'unplannedDowntime', 1),
-(20, '2021-11-20 09:50:24', '2021-11-20 09:50:24', 'nouveauPODETest', 'Medan1', 'other', 'other', 25, 'Setting Capper', 'unplannedDowntime', 1),
-(21, '2021-11-20 09:50:52', '2021-11-20 09:50:52', 'nouveauPODETest', 'Medan1', 'other', 'other', 20, 'Batchnumber', 'unplannedDowntime', 1),
-(22, '2021-11-20 09:51:26', '2021-11-20 09:51:26', 'nouveauPODETest', 'Medan1', 'other', 'other', 30, 'Slip Servo', 'unplannedDowntime', 1);
+CREATE TABLE [ole_downtimeReason] (
+  [id] int identity(1,1) primary key,
+  [reason] nvarchar(50) not null,
+  [downtimeType] nvarchar(50) not null
+);
+
+INSERT INTO [ole_downtimeReason] (reason, downtimeType) VALUES
+('CIP', 'unplannedDowntime'),
+('formatChanging', 'unplannedDowntime'),
+('packNumberChanging', 'unplannedDowntime'),
+('unplannedDowntime', 'unplannedDowntime'),
+('break', 'plannedDowntime'),
+('lunch', 'plannedDowntime'),
+('emergency', 'plannedDowntime'),
+('meeting', 'plannedDowntime'),
+('noProductionPlanned', 'plannedDowntime'),
+('maintenance', 'plannedDowntime'),
+('projectImplementation', 'plannedDowntime');
+
+CREATE TABLE [ole_products] (
+  [id] int identity(1,1) primary key,
+  [product] nvarchar(150) not null,
+  [GMID] nvarchar(50) not null,
+  [BULK] nvarchar(50) not null,
+  [family] nvarchar(150) not null,
+  [GIFAP] nvarchar(50) not null,
+  [description] nvarchar(150) not null,
+  [formulationType] nvarchar(150) not null,
+  [size] nvarchar(20) not null,
+  [idealRate] float(2) not null,
+  [bottlesPerCase] int not null
+);
+
+INSERT INTO [ole_products] VALUES
+('SUCCESSNATURALY BTLPE1X1GL USA', '87507', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '4', 20.00, 4),
+('SUCCESSNATURALY BTLHPE4X1QT EN', '101223', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('CONSERVESC BTLHPE4X4X1QT USA', '124042', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('SUCCESS BTLHPE4X4X1L CAN', '138087', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('GF120NFBAIT BTLHPE4X1GL USA GF1111', '225830', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '4', 20.00, 4),
+('GF120FFBAIT BTLHPE4X3.78L CAN GF1111', '275681', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '4', 20.00, 4),
+('RADIANTSC BTLHPE4X1GL USA', '295528', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '4', 20.00, 4),
+('RADIANTSC BTLHPE4X4X1QT USA', '295529', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('CONSERVESC BTLHPE4X4X1QT PRI', '335871', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Liquid', '1', 40.00, 12),
+('GF120NFNATURALYTEFFB BTLFPE4X4L PAK', '336953', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '4', 20.00, 4),
+('ENTRUST BTLHPE12X1L CAN', '11039846', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('NATURALUREFLYBAIT BTLHPE2X10L AUS', '11045177', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '10', 10.00, 2),
+('INTREPIDEDGE BTLHPE4X1GL USA', '11045655', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '4', 20.00, 4),
+('SUCCESSNATURALYTE BTLHPE12X1QT USA', '97018444', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('ENTRUSTSC BTLHPE12X1QT USA', '97018807', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('RADIANTSC BTLHPE12X1QT USA', '97018841', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('RADIANTSC BTLHPE12X1QT PRI', '97019730', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('ENTRUSTSC BTLHPE12X1QT PRI', '97019823', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('MOZKILL120SC BTLHPE4X5L NGA', '99056786', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '5', 17.00, 4),
+('ENTRUSTSC BTLHPE4X4X1QT PRI', '99059298', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('RADIANTSC BTLHPE4X4X1QT PRI', '99059340', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '1', 40.00, 12),
+('EXALT60SC BTLPET24x0.25L PHL', '11111', 'BT100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '0.25', 100.00, 24),
+('EXALT BTLPET24x0.2 5L THA', '11112', 'EX100', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Solid', '0.25', 100.00, 24),
+('TENANO360SC BTLPET50x0.1L IDN', '11113', 'BULKTENANO', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Sparkling', '0.1', 115.00, 50),
+('ENDURE60SC BTLPET20X0.5L MYS', '11114', 'ENDURE', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Sparkling', '0.5', 80.00, 20),
+('TENANO360SC BTLPET24x0.2L IDN', '22222', 'BULKTENANO', 'Herbicide', 'WG', 'Water Dispersible Granule', 'Sparkling', '0.2', 100.00, 24);
+
+CREATE TABLE [ole_rejection_counters] (
+  [id] int identity(1,1) primary key,
+  [created_at] datetime not null default CURRENT_TIMESTAMP,
+  [updated_at] datetime not null default '1900-01-01 00:00:00',
+  [po] nvarchar(50) default null,
+  [fillerCounter] int not null,
+  [caperCounter] int not null,
+  [labelerCounter] int not null,
+  [weightBoxCounter] int not null,
+  [qualityControlCounter] int not null,
+  [fillerRejection] int not null,
+  [caperRejection] int not null,
+  [labelerRejection] int not null,
+  [weightBoxRejection] int not null,
+  [qualityControlRejection] int not null
+);
+
+INSERT INTO [ole_rejection_counters] (created_at, updated_at, po, fillerCounter, caperCounter, labelerCounter, weightBoxCounter, qualityControlCounter, fillerRejection, caperRejection, labelerRejection, weightBoxRejection, qualityControlRejection) VALUES
+('2021-11-17 19:13:35', '1900-01-01 00:00:00', 'titi', 30, 1, 3, 4, 0, 20, 5, 15, 3, 0),
+('2021-11-17 19:13:56', '1900-01-01 00:00:00', 'lala', 10, 0, 20, 1, 0, 3, 5, 15, 3, 0),
+('2021-11-17 19:14:10', '1900-01-01 00:00:00', 'toto', 0, 1, 2, 1, 0, 4, 10, 5, 5, 0),
+('2021-11-14 23:11:10', '1900-01-01 00:00:00', 'testPOMedan1', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+('2021-11-14 23:11:10', '1900-01-01 00:00:00', 'testPOMedan3', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+('2021-11-14 23:11:10', '1900-01-01 00:00:00', 'testPOMedan4', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+('2021-11-14 23:11:10', '1900-01-01 00:00:00', 'testPOMedan5', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+('2021-11-20 09:35:02', '2021-11-20 09:35:02', 'testMedanLigne2', 0, 0, 0, 288, 0, 0, 0, 0, 24, 0);
