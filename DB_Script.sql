@@ -45,7 +45,7 @@ CREATE TABLE [teamInfo] (
   [workingEnd] int not null,
   [type] nvarchar(50) not null,
   [worksite_name] nvarchar(50) not null,
-  [state] in not null default 0
+  [state] int not null default 0
 );
 
 INSERT INTO [teamInfo] VALUES
