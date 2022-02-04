@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CortevaApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class MachineController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace CortevaApp.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("{productionlineId}")]
+        [HttpGet("machines/{productionlineId}")]
         public JsonResult getMachines(int productionlineId)
         {
             string queryMachines = @"select *
@@ -63,6 +63,34 @@ namespace CortevaApp.Controllers
             DataTable[] data = { machines, formats };
 
             return new JsonResult(data);
+        }
+
+        [HttpGet("unplannedDowntime/unplannedDowntime/{machineName}")]
+        public JsonResult GetUnplannedDowntimeMachineIssue(string machineName)
+        {
+            string queryIssues = @"select mc.name as component, m.name, other_machine
+                                   from dbo.ole_machines m, dbo.machine_component mc
+                                   where m.name = mc.machineName
+                                   and m.name = @machineName";
+
+            DataTable Issues = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(queryIssues, connection))
+                {
+                    command.Parameters.AddWithValue("@machineName", machineName);
+                    reader = command.ExecuteReader();
+                    Issues.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(Issues);
         }
     }
 }

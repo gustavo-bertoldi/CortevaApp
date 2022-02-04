@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CortevaApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class WorksiteController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace CortevaApp.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet]
+        [HttpGet("sites")]
         public JsonResult getSites()
         {
             string querySites = @"select * from dbo.worksite";
@@ -56,6 +56,33 @@ namespace CortevaApp.Controllers
             DataTable[] data = { sites, productionLines }; 
 
             return new JsonResult(data);
+        }
+
+        [HttpGet("worksiteid/{worksite}")]
+        public JsonResult GetWorksiteID(string worksite)
+        {
+            string QueryWorksiteID = @"select id
+                                       from dbo.worksite
+                                       where name = @worksite";
+
+            DataTable WorksiteID = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryWorksiteID, connection))
+                {
+                    command.Parameters.AddWithValue("@worksite", worksite);
+                    reader = command.ExecuteReader();
+                    WorksiteID.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(WorksiteID);
         }
     }
 }
