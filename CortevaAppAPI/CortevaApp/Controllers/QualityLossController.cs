@@ -50,7 +50,7 @@ namespace CortevaApp.Controllers
                     Sites.Load(reader);
                     reader.Close();
                 }
-                
+
 
                 if (Sites.Rows.Count > 0)
                 {
@@ -129,5 +129,81 @@ namespace CortevaApp.Controllers
             }
             return new JsonResult(Results);
         }
+
+        [HttpGet("performance/{po}")]
+        public JsonResult GetPerformanceForASite(string po)
+        {
+            string QueryRRF = @"select sum(sl.duration) as Duration, count(*) as nbEvents
+                                from dbo.ole_speed_losses sl
+                                where sl.OLE = @po
+                                and sl.reason = 'Reduced Rate At Filler'";
+
+            string QueryRRM = @"select sum(sl.duration) as Duration, count(*) as nbEvents
+                                from dbo.ole_speed_losses sl
+                                where sl.OLE = @po
+                                and sl.reason = 'Reduced Rate At An Other Machine'";
+
+            string QueryFOS = @"select sum(sl.duration) as Duration, count(*) as nbEvents
+                                from dbo.ole_speed_losses sl
+                                where sl.OLE = @po
+                                and sl.reason = 'Filler OWn Stoppage'";
+
+            string QueryFSM = @"select sum(sl.duration) as Duration, count(*) as nbEvents
+                                from dbo.ole_speed_losses sl
+                                where sl.OLE = @po
+                                and sl.reason = 'Filler Own Stoppage By An Other Machine'";
+
+            DataTable RRF = new DataTable();
+            DataTable RRM = new DataTable();
+            DataTable FOS = new DataTable();
+            DataTable FSM = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryRRF, connection))
+                {
+                    command.Parameters.AddWithValue("@po", po);
+                    reader = command.ExecuteReader();
+                    RRF.Load(reader);
+                    reader.Close();
+                }
+                using (SqlCommand command = new SqlCommand(QueryRRM, connection))
+                {
+                    command.Parameters.AddWithValue("@po", po);
+                    reader = command.ExecuteReader();
+                    RRM.Load(reader);
+                    reader.Close();
+                }
+                using (SqlCommand command = new SqlCommand(QueryFOS, connection))
+                {
+                    command.Parameters.AddWithValue("@po", po);
+                    reader = command.ExecuteReader();
+                    FOS.Load(reader);
+                    reader.Close();
+                }
+                using (SqlCommand command = new SqlCommand(QueryFSM, connection))
+                {
+                    command.Parameters.AddWithValue("@po", po);
+                    reader = command.ExecuteReader();
+                    FSM.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            IDictionary<string, DataTable> Result = new Dictionary<string, DataTable>()
+            {
+              { "RRF", RRF },
+              { "RRM", RRM },
+              { "FOS", FOS },
+              { "FSM", FSM },
+            };
+
+            return new JsonResult(Result);
+        }
+
     }
 }
