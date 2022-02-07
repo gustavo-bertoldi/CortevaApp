@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using CortevaApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -111,6 +112,67 @@ namespace CortevaApp.Controllers
             }
 
             return new JsonResult(Assignation.Select()[0][0]);
+        }
+
+
+        [HttpPost("assignation")]
+        public JsonResult CreateAssignement(AssignementTeamPO Assignement)
+        {
+            string QueryNewAssignement = @"insert into dbo.ole_assignement_team_pos (username, productionline, po, shift, worksite)
+                                       values (@Username, @ProductionLine, @PO, @Shift, @Worksite)";
+
+
+            DataTable NewAssignement = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryNewAssignement, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", Assignement.username);
+                    command.Parameters.AddWithValue("@ProductionLine", Assignement.productionline);
+                    command.Parameters.AddWithValue("@PO", Assignement.po);
+                    command.Parameters.AddWithValue("@Shift", Assignement.shift);
+                    command.Parameters.AddWithValue("@Worksite", Assignement.worksite);
+                    reader = command.ExecuteReader();
+                    NewAssignement.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(NewAssignement);
+        }
+
+        [HttpPost("PO")]
+        public JsonResult CreatePO(PO po)
+        {
+            string QueryNewPO = @"insert into dbo.ole_pos (number, GMIDCode, productionline_name)
+                                  values (@Number, @GMIDCode, @ProductionLine)";
+
+
+            DataTable NewPO = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryNewPO, connection))
+                {
+                    command.Parameters.AddWithValue("@Number", po.number);
+                    command.Parameters.AddWithValue("@GMIDCode", po.GMIDCode);
+                    command.Parameters.AddWithValue("@ProductionLine", po.productionline_name);
+                    reader = command.ExecuteReader();
+                    NewPO.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(NewPO);
         }
     }
 }

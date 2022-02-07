@@ -126,7 +126,7 @@ INSERT INTO [ole_speed_losses] (created_at, updated_at, OLE, productionline, dur
 ('2021-11-14 15:34:19', '2021-10-02 13:50:50', 'titi', 'F52', 10, 'Filler Own Stoppage', 'lalalalala');
 
 CREATE TABLE [ole_assignement_team_pos] (
-  [id] int primary key,
+  [id] int identity(1,1) primary key,
   [created_at] datetime not null default CURRENT_TIMESTAMP,
   [updated_at] datetime not null default '1900-01-01 00:00:00',
   [username] nvarchar(25) not null,
@@ -136,26 +136,26 @@ CREATE TABLE [ole_assignement_team_pos] (
   [worksite] int not null
 );
 
-INSERT INTO [ole_assignement_team_pos] (id, created_at, updated_at, username, productionline, po, shift, worksite) VALUES
-(1, '2021-09-22 07:46:09', '1900-01-01 00:00:00', 'thotrb', 1, 'titi', 'A', 1),
-(2, '2021-09-22 07:46:09', '1900-01-01 00:00:00', 'thotrb', 5, 'toto', 'A', 1),
-(34, '2021-10-26 11:49:50', '2021-10-26 11:49:50', 'userMedan', 6, 'testPOMedan1', 'First', 2),
-(35, '2021-10-26 11:50:11', '2021-10-26 11:50:11', 'userMedan', 7, 'testPOMedan2', 'First', 2),
-(36, '2021-10-26 12:58:13', '2021-10-26 12:58:13', 'userMedan', 6, 'testPOMedan2', 'First', 2),
-(37, '2021-10-26 13:00:54', '2021-10-26 13:00:54', 'userMedan', 6, 'testPOMedan3', 'Second', 2),
-(38, '2021-10-26 13:00:57', '2021-10-26 13:00:57', 'userMedan', 7, 'testPOMedan4', 'Second', 2),
-(39, '2021-10-26 13:37:21', '2021-10-26 13:37:21', 'userMedan', 6, 'testPOMedan4', 'Third', 2),
-(40, '2021-10-26 13:37:25', '2021-10-26 13:37:25', 'userMedan', 7, 'testPOMedan2', 'Third', 2),
-(41, '2021-10-26 13:38:02', '2021-10-26 13:38:02', 'userMedan', 7, 'testPOMedan3', 'Second', 2),
-(42, '2021-10-26 13:38:51', '2021-10-26 13:38:51', 'userMedan', 7, 'testPOMedan1', 'First', 2),
-(43, '2021-10-28 12:31:44', '2021-10-28 12:31:44', 'userMedan', 7, 'testPOMedan5', 'Third', 2),
-(44, '2021-10-28 12:58:34', '2021-10-28 12:58:34', 'userMedan', 6, 'testPOMedan5', 'Third', 2),
-(45, '2021-10-28 12:58:37', '2021-10-28 12:58:37', 'userMedan', 7, 'testPOMedan1', 'Third', 2),
-(46, '2021-11-03 15:05:03', '2021-11-03 15:05:03', 'userMedan', 6, 'testMedanLigne1', 'Third', 2),
-(47, '2021-11-03 15:05:06', '2021-11-03 15:05:06', 'userMedan', 7, 'testMedanLigne2', 'Third', 2),
-(48, '2021-11-04 12:06:15', '2021-11-04 12:06:15', 'thotrb', 5, 'titi', 'A', 1),
-(49, '2021-11-20 09:48:47', '2021-11-20 09:48:47', 'userMedan', 6, 'nouveauPODETest', 'Third', 2),
-(50, '2021-11-20 09:48:49', '2021-11-20 09:48:49', 'userMedan', 7, 'PO1', 'Third', 2);
+INSERT INTO [ole_assignement_team_pos] (created_at, updated_at, username, productionline, po, shift, worksite) VALUES
+('2021-09-22 07:46:09', '1900-01-01 00:00:00', 'thotrb', 1, 'titi', 'A', 1),
+('2021-09-22 07:46:09', '1900-01-01 00:00:00', 'thotrb', 5, 'toto', 'A', 1),
+('2021-10-26 11:49:50', '2021-10-26 11:49:50', 'userMedan', 6, 'testPOMedan1', 'First', 2),
+('2021-10-26 11:50:11', '2021-10-26 11:50:11', 'userMedan', 7, 'testPOMedan2', 'First', 2),
+('2021-10-26 12:58:13', '2021-10-26 12:58:13', 'userMedan', 6, 'testPOMedan2', 'First', 2),
+('2021-10-26 13:00:54', '2021-10-26 13:00:54', 'userMedan', 6, 'testPOMedan3', 'Second', 2),
+('2021-10-26 13:00:57', '2021-10-26 13:00:57', 'userMedan', 7, 'testPOMedan4', 'Second', 2),
+('2021-10-26 13:37:21', '2021-10-26 13:37:21', 'userMedan', 6, 'testPOMedan4', 'Third', 2),
+('2021-10-26 13:37:25', '2021-10-26 13:37:25', 'userMedan', 7, 'testPOMedan2', 'Third', 2),
+('2021-10-26 13:38:02', '2021-10-26 13:38:02', 'userMedan', 7, 'testPOMedan3', 'Second', 2),
+('2021-10-26 13:38:51', '2021-10-26 13:38:51', 'userMedan', 7, 'testPOMedan1', 'First', 2),
+('2021-10-28 12:31:44', '2021-10-28 12:31:44', 'userMedan', 7, 'testPOMedan5', 'Third', 2),
+('2021-10-28 12:58:34', '2021-10-28 12:58:34', 'userMedan', 6, 'testPOMedan5', 'Third', 2),
+('2021-10-28 12:58:37', '2021-10-28 12:58:37', 'userMedan', 7, 'testPOMedan1', 'Third', 2),
+('2021-11-03 15:05:03', '2021-11-03 15:05:03', 'userMedan', 6, 'testMedanLigne1', 'Third', 2),
+('2021-11-03 15:05:06', '2021-11-03 15:05:06', 'userMedan', 7, 'testMedanLigne2', 'Third', 2),
+('2021-11-04 12:06:15', '2021-11-04 12:06:15', 'thotrb', 5, 'titi', 'A', 1),
+('2021-11-20 09:48:47', '2021-11-20 09:48:47', 'userMedan', 6, 'nouveauPODETest', 'Third', 2),
+('2021-11-20 09:48:49', '2021-11-20 09:48:49', 'userMedan', 7, 'PO1', 'Third', 2);
 
 CREATE TABLE [ole_pos] (
   [id] int primary key,
