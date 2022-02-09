@@ -174,5 +174,47 @@ namespace CortevaApp.Controllers
 
             return new JsonResult(NewPO);
         }
+
+        [HttpPost("stopPO/{PO}/{availability}/{performance}/{quality}/{OLE}/{quantityProduced}/{totalDuration}")]
+        public JsonResult StopPO(string po, double availability, double performance, double quality, double OLE, int quantityProduced, int totalDuration)
+        {
+            string QueryStopPO = @"update dbo.ole_pos
+                                   set state = 0,
+                                   performance = @Performance,
+                                   availability = @Availability,
+                                   quality = @Quality,
+                                   OLE = @OLE,
+                                   qtyProduced = @QuantityProduced,
+                                   workingDuration = @TotalDuration
+                                   where number = @PO";
+
+
+            DataTable StopPO = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryStopPO, connection))
+                {
+                    command.Parameters.AddWithValue("@Performance", performance);
+                    command.Parameters.AddWithValue("@Availability", availability);
+                    command.Parameters.AddWithValue("@Quality", quality);
+                    command.Parameters.AddWithValue("@OLE", OLE);
+                    command.Parameters.AddWithValue("@QuantityProduced", quantityProduced);
+                    command.Parameters.AddWithValue("@TotalDuration", totalDuration);
+                    command.Parameters.AddWithValue("@PO", po);
+                    reader = command.ExecuteReader();
+                    StopPO.Load(reader);
+                    reader.Close();
+                }
+
+                
+                 connection.Close();
+            }
+
+            return new JsonResult(StopPO);
+        }
     }
 }

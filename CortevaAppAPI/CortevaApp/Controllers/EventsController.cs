@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using CortevaApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -575,6 +576,238 @@ namespace CortevaApp.Controllers
                     } );
                 }
             }
+        }
+
+        [HttpGet("assignation/{username}/{po}/{productionline}")]
+        public JsonResult isAssignantionPossible(string username, string po, int productionLine)
+        {
+            string QueryAssignation = @"select count(*) as result
+                                       from dbo.ole_assignement_team_pos atp
+                                       where atp.username = @username
+                                       and atp.po = @po
+                                       and atp.productionline = @productionLine";
+
+
+            DataTable Assignation = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryAssignation, connection))
+                {
+                    command.Parameters.AddWithValue("@username", username);
+                    command.Parameters.AddWithValue("@po", po);
+                    command.Parameters.AddWithValue("@productionline", productionLine);
+                    reader = command.ExecuteReader();
+                    Assignation.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(Assignation.Select()[0][0]);
+        }
+
+
+        [HttpPost("assignation")]
+        public JsonResult CreateAssignement(AssignementTeamPO Assignement)
+        {
+            string QueryNewAssignement = @"insert into dbo.ole_assignement_team_pos (username, productionline, po, shift, worksite)
+                                       values (@Username, @ProductionLine, @PO, @Shift, @Worksite)";
+
+
+            DataTable NewAssignement = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryNewAssignement, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", Assignement.username);
+                    command.Parameters.AddWithValue("@ProductionLine", Assignement.productionline);
+                    command.Parameters.AddWithValue("@PO", Assignement.po);
+                    command.Parameters.AddWithValue("@Shift", Assignement.shift);
+                    command.Parameters.AddWithValue("@Worksite", Assignement.worksite);
+                    reader = command.ExecuteReader();
+                    NewAssignement.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(NewAssignement);
+        }
+
+        [HttpPost("PO")]
+        public JsonResult CreatePO(PO po)
+        {
+            string QueryNewPO = @"insert into dbo.ole_pos (number, GMIDCode, productionline_name)
+                                  values (@Number, @GMIDCode, @ProductionLine)";
+
+
+            DataTable NewPO = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QueryNewPO, connection))
+                {
+                    command.Parameters.AddWithValue("@Number", po.number);
+                    command.Parameters.AddWithValue("@GMIDCode", po.GMIDCode);
+                    command.Parameters.AddWithValue("@ProductionLine", po.productionline_name);
+                    reader = command.ExecuteReader();
+                    NewPO.Load(reader);
+                    reader.Close();
+                }
+                connection.Close();
+            }
+
+            return new JsonResult(NewPO);
+        }
+
+        [HttpPost("unplannedEvent/changingFormat")]
+        public JsonResult SaveUnplannedEventChangingFormat(UnplannedEventChangingFormat ue)
+        {
+            string QuerySaveUECF = @"insert into dbo.ole_unplanned_event_changing_formats
+                                   (OLE, productionline, predicted_duration, total_duration, comment)
+                                   values (@OLE, @PL, @PD, @TD, @C)";
+
+
+            DataTable SaveUECF = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QuerySaveUECF, connection))
+                {
+                    command.Parameters.AddWithValue("@OLE", ue.OLE);
+                    command.Parameters.AddWithValue("@PL", ue.productionline);
+                    command.Parameters.AddWithValue("@PD", ue.predicted_duration);
+                    command.Parameters.AddWithValue("@TD", ue.total_duration);
+                    command.Parameters.AddWithValue("@C", ue.comment);
+                    reader = command.ExecuteReader();
+                    SaveUECF.Load(reader);
+                    reader.Close();
+                }
+
+
+                connection.Close();
+            }
+
+            return new JsonResult(SaveUECF);
+        }
+
+        [HttpPost("unplannedEvent/clientChanging")]
+        public JsonResult SaveUnplannedEventChangingClient(UnplannedEventChangingClient ue)
+        {
+            string QuerySaveUECC = @"insert into dbo.ole_unplanned_event_changing_clients
+                                   (OLE, productionline, predicted_duration, total_duration, comment, lot_number)
+                                   values (@OLE, @PL, @PD, @TD, @C, @LN)";
+
+
+            DataTable SaveUECC = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QuerySaveUECC, connection))
+                {
+                    command.Parameters.AddWithValue("@OLE", ue.OLE);
+                    command.Parameters.AddWithValue("@PL", ue.productionline);
+                    command.Parameters.AddWithValue("@PD", ue.predicted_duration);
+                    command.Parameters.AddWithValue("@TD", ue.total_duration);
+                    command.Parameters.AddWithValue("@C", ue.comment);
+                    command.Parameters.AddWithValue("@LN", ue.lot_number);
+                    reader = command.ExecuteReader();
+                    SaveUECC.Load(reader);
+                    reader.Close();
+                }
+
+
+                connection.Close();
+            }
+
+            return new JsonResult(SaveUECC);
+        }
+
+        [HttpPost("unplannedEvent/CIP")]
+        public JsonResult SaveUnplannedEventCIP(UnplannedEventCIP ue)
+        {
+            string QuerySaveUECIP = @"insert into dbo.ole_unplanned_event_cips
+                                   (OLE, productionline, predicted_duration, total_duration, comment, previous_bulk)
+                                   values (@OLE, @PL, @PD, @TD, @C, @PB)";
+
+
+            DataTable SaveUECIP = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QuerySaveUECIP, connection))
+                {
+                    command.Parameters.AddWithValue("@OLE", ue.OLE);
+                    command.Parameters.AddWithValue("@PL", ue.productionline);
+                    command.Parameters.AddWithValue("@PD", ue.predicted_duration);
+                    command.Parameters.AddWithValue("@TD", ue.total_duration);
+                    command.Parameters.AddWithValue("@C", ue.comment);
+                    command.Parameters.AddWithValue("@PB", ue.previous_bulk);
+                    reader = command.ExecuteReader();
+                    SaveUECIP.Load(reader);
+                    reader.Close();
+                }
+
+
+                connection.Close();
+            }
+
+            return new JsonResult(SaveUECIP);
+        }
+
+        [HttpPost("unplannedEvent/unplannedDowntime")]
+        public JsonResult SaveUnplannedEventUnplannedDowntime(UnplannedEventUnplannedDowntime ue)
+        {
+            string QuerySaveUEUD = @"insert into dbo.ole_unplanned_event_unplanned_downtimes
+                                   (OLE, productionline, implicated_machine, total_duration, comment, component)
+                                   values (@OLE, @PL, @IM, @TD, @COMM, @COMP)";
+
+
+            DataTable SaveUEUD = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QuerySaveUEUD, connection))
+                {
+                    command.Parameters.AddWithValue("@OLE", ue.OLE);
+                    command.Parameters.AddWithValue("@PL", ue.productionline);
+                    command.Parameters.AddWithValue("@COMP", ue.component);
+                    command.Parameters.AddWithValue("@TD", ue.total_duration);
+                    command.Parameters.AddWithValue("@COMM", ue.comment);
+                    command.Parameters.AddWithValue("@IM", ue.implicated_machine);
+                    reader = command.ExecuteReader();
+                    SaveUEUD.Load(reader);
+                    reader.Close();
+                }
+
+
+                connection.Close();
+            }
+
+            return new JsonResult(SaveUEUD);
         }
     }
 }

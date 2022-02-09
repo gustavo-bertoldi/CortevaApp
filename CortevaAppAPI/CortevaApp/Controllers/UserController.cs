@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace CortevaApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace CortevaApp.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("{username}")]
+        [HttpGet("user/{username}")]
         public JsonResult GetUserInfo(string username)
         {
             string userInfoQuery = @"select *
@@ -92,5 +92,8 @@ namespace CortevaApp.Controllers
 
             return new JsonResult(data);
         }
+
+      
+
     }
 }
