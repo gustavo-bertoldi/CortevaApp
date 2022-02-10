@@ -809,5 +809,39 @@ namespace CortevaApp.Controllers
 
             return new JsonResult(SaveUEUD);
         }
+
+        [HttpPost("plannedEvent")]
+        public JsonResult SavePlannedEvent(PlannedEvent pe)
+        {
+            string QuerySavePE = @"insert into dbo.ole_planned_events
+                                   (OLE, productionline, reason, duration, comment)
+                                   values (@OLE, @PL, @R, @D, @COMM)";
+
+
+            DataTable SavePE = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QuerySavePE, connection))
+                {
+                    command.Parameters.AddWithValue("@OLE", pe.OLE);
+                    command.Parameters.AddWithValue("@PL", pe.productionline);
+                    command.Parameters.AddWithValue("@R", pe.reason);
+                    command.Parameters.AddWithValue("@D", pe.duration);
+                    command.Parameters.AddWithValue("@COMM", pe.comment);
+                    reader = command.ExecuteReader();
+                    SavePE.Load(reader);
+                    reader.Close();
+                }
+
+
+                connection.Close();
+            }
+
+            return new JsonResult(SavePE);
+        }
     }
 }

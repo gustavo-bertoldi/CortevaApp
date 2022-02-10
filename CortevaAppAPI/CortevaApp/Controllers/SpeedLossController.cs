@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using CortevaApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -89,6 +90,40 @@ namespace CortevaApp.Controllers
             };
 
             return new JsonResult(Result);
+        }
+
+        [HttpPost("speedLoss")]
+        public JsonResult SaveSpeedLoss(SpeedLoss sl)
+        {
+            string QuerySaveSL = @"insert into dbo.ole_speed_losses
+                                   (OLE, productionline, duration, reason, comment)
+                                   values (@OLE, @PL, @D, @R, @COMM)";
+
+
+            DataTable SaveSL = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(QuerySaveSL, connection))
+                {
+                    command.Parameters.AddWithValue("@OLE", sl.OLE);
+                    command.Parameters.AddWithValue("@PL", sl.productionline);
+                    command.Parameters.AddWithValue("@R", sl.reason);
+                    command.Parameters.AddWithValue("@D", sl.duration);
+                    command.Parameters.AddWithValue("@COMM", sl.comment);
+                    reader = command.ExecuteReader();
+                    SaveSL.Load(reader);
+                    reader.Close();
+                }
+
+
+                connection.Close();
+            }
+
+            return new JsonResult(SaveSL);
         }
     }
 }
