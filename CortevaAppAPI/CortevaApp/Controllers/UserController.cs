@@ -29,7 +29,9 @@ namespace CortevaApp.Controllers
 
             string crewLeadersQuery = @"select *
                                       from dbo.users u, dbo.worksite w
-                                      where u.worksite_name = w.name and u.status = 1";
+                                      where u.worksite_name = w.name and u.status = 1 and u.worksite_name = (Select worksite_name
+                                                                                                              from dbo.users u2, dbo.worksite w2
+                                                                                                                where u2.worksite_name = w2.name and u2.login = @username )";
 
             string shiftsQuery = @"select *
                                  from dbo.users u, dbo.teamInfo ti, dbo.worksite w
@@ -64,6 +66,7 @@ namespace CortevaApp.Controllers
 
                 using (SqlCommand command = new SqlCommand(crewLeadersQuery, connection))
                 {
+                    command.Parameters.AddWithValue("@username", username);
                     reader = command.ExecuteReader();
                     crewLeaders.Load(reader);
                     reader.Close();

@@ -82,7 +82,7 @@ namespace CortevaApp.Controllers
             return new JsonResult(pos);
         }
 
-        [HttpGet("assignation/{username}/{po}/{productionline}")]
+        [HttpGet("countassignation/{username}/{po}/{productionline}")]
         public JsonResult isAssignantionPossible(string username, string po, int productionLine)
         {
             string QueryAssignation = @"select count(*) as result
@@ -115,7 +115,7 @@ namespace CortevaApp.Controllers
         }
 
 
-        [HttpPost("assignation")]
+        [HttpPost("addassignation")]
         public JsonResult CreateAssignement(AssignementTeamPO Assignement)
         {
             string QueryNewAssignement = @"insert into dbo.ole_assignement_team_pos (username, productionline, po, shift, worksite)

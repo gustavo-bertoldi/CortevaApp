@@ -21,7 +21,7 @@ namespace CortevaApp.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet("{productionName}/{downtimeType}/unplannedDowntime")]
+        [HttpGet("getMachines/{productionName}/{downtimeType}/unplannedDowntime")]
         public JsonResult GetUnplannedDowntime2(string _, string __)
         {
             string queryUnplannedDowntime2 = @"select *
