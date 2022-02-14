@@ -22,6 +22,9 @@ namespace CortevaApp.Controllers
             _configuration = configuration;
         }
 
+        
+
+
         [HttpGet("events/{po}/{productionLine}")]
         public JsonResult GetEvents(string po, string productionLine)
         {
@@ -270,6 +273,8 @@ namespace CortevaApp.Controllers
             return new JsonResult(data);
         }
 
+
+       
         [HttpGet("allevents/{site}/{productionLine}/{beginningDate}/{endingDate}")]
         public JsonResult GetAllEventsPeriod(string site, string productionLine, string beginningDate, string endingDate)
         {
