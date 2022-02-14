@@ -176,8 +176,6 @@ namespace CortevaApp.Controllers
             DataTable seqCips = new DataTable();
             DataTable seqCovs = new DataTable();
 
-
-
             string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
             SqlDataReader reader;
             using (SqlConnection connection = new SqlConnection(sqlDataSource))
@@ -253,6 +251,7 @@ namespace CortevaApp.Controllers
                     reader.Close();
                 }
 
+     
 
                 connection.Close();
             }
@@ -265,7 +264,7 @@ namespace CortevaApp.Controllers
                 { "machines", machineShutdowns },
                 { "external", externalShutdowns },
                 { "seqCIP", seqCips },
-                { "seqCOV", seqCovs }
+                { "seqCOV", seqCovs } ,
             };
 
             return new JsonResult(data);
