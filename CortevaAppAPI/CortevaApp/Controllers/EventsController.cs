@@ -274,6 +274,8 @@ namespace CortevaApp.Controllers
         }
 
 
+
+
        
         [HttpGet("allevents/{site}/{productionLine}/{beginningDate}/{endingDate}")]
         public JsonResult GetAllEventsPeriod(string site, string productionLine, string beginningDate, string endingDate)
