@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import {default as axios} from "axios";
+import axios from "axios";
 import router from "@/router";
 import { urlAPI} from "@/variables";
 

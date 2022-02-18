@@ -66,7 +66,7 @@
 
 <script>
 import router from "@/router";
-import {default as axios} from "axios";
+import axios from "axios";
 import { urlAPI} from "@/variables";
 
 

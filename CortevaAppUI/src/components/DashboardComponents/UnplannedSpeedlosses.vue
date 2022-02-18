@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import {default as axios} from "axios";
+import axios from "axios";
 import {urlAPI} from "@/variables";
 import ProductionWindow from "@/components/DashboardComponents/ProductionWindow";
 import Chart from "chart.js/auto";

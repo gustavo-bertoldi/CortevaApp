@@ -253,7 +253,7 @@
 
 <script>
 import {urlAPI} from "@/variables";
-import {default as axios} from "axios";
+import axios from "axios";
 
 
 export default {

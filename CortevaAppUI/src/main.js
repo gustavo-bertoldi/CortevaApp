@@ -22,7 +22,8 @@ import axios from 'axios';
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("auth-token")}`;
 axios.interceptors.response.use(response => response, error => {
   if (error.response.status == 401) {
+    console.log("Unauthorized");
     localStorage.removeItem('username');
-    router.replace("/login");
+    router.replace("/");
   }
 });

@@ -99,8 +99,7 @@
 import NavbarSaisie from "@/components/UserInputComponents/NavbarSaisie";
 import router from "@/router";
 import {urlAPI} from "@/variables";
-
-const axios = require('axios').default;
+import axios from 'axios';
 
 export default {
   name: "TeamInfo",
