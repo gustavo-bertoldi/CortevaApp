@@ -490,7 +490,7 @@ export default {
 
       parameters: [],
 
-      username: sessionStorage.getItem("username"),
+      username: localStorage.getItem("username"),
 
 
       speedLossEvent: {

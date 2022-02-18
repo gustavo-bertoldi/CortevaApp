@@ -22,6 +22,9 @@
 
 <script>
 import router from "@/router";
+import axios from 'axios';
+import {urlAPI} from "@/variables";
+import jwt_decode from "jwt-decode";
 
 export default {
   name: "LoginPage",
@@ -38,44 +41,24 @@ export default {
   },
   methods: {
     log : function(){
-      if(sessionStorage.getItem("username") === null){
-        sessionStorage.username = this.username;
-      }else{
-        sessionStorage.setItem("username", this.username);
-      }
-
-      console.log(this.username);
-      router.replace('/teamInfo')
-
-      /**
-      var tab = [];
-      tab.push(this.username);
-      tab.push(this.password);
-
-      this.$store.dispatch('retrieveToken', tab).then(() => {
-
+      const logData = {
+        login: this.username,
+        password: this.password
+      };
+      axios.post(urlAPI + "login", logData).then((resp) => {
+        if (resp.status == 200 && resp.data.token) {
+          const tokenDecoded = jwt_decode(resp.data.token);
+          localStorage.setItem("username", tokenDecoded.login);
+          localStorage.setItem("auth-token", resp.data.token);
+          router.replace('/teamInfo')
+        } else {
+          localStorage.removeItem("username");
+        }
+      }).catch(err => {
+        localStorage.removeItem("username");
+        console.log(err);
       });
-
-
-      //var homeUrl = window.location.hostname + "8000";
-      var username = document.getElementById("login").value;
-
-      //console.log(homeUrl);
-
-      if(sessionStorage.getItem("username") === null){
-        sessionStorage.username = username;
-      }else{
-        sessionStorage.setItem("username", username);
-      }
-
-
-      if(sessionStorage.getItem("loginType") === "op"){
-        window.location.replace( this.url + "teamInfo");
-      }else if(sessionStorage.getItem("loginType") === "sup"){
-        window.location.replace( this.url + "packagingLineID");
-      }
-
-*/
+    
     },
   }
 }

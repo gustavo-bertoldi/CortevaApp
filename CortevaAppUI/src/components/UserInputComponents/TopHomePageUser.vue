@@ -68,7 +68,7 @@ export default {
       workingDebut: sessionStorage.getItem("workingDebut"),
       workingEnd: sessionStorage.getItem("workingEnd"),
       productionlines: sessionStorage.getItem("prodlines").split(','),
-      username: sessionStorage.getItem("username"),
+      username: localStorage.getItem("username"),
       PO: sessionStorage.getItem("pos").split(','),
       GMID: sessionStorage.getItem("GMID").split(','),
 

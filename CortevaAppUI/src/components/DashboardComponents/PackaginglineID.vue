@@ -167,7 +167,7 @@ export default {
       formulationType: '',
       reporting: '',
       tool: '',
-      username: sessionStorage.getItem("username"),
+      username: localStorage.getItem("username"),
       index: -1,
       show: 0,
       lo: this.$t("load"),

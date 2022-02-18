@@ -98,7 +98,7 @@
 <script>
 import NavbarSaisie from "@/components/UserInputComponents/NavbarSaisie";
 import router from "@/router";
-import { urlAPI} from "@/variables";
+import {urlAPI} from "@/variables";
 
 const axios = require('axios').default;
 
@@ -109,7 +109,7 @@ export default {
   },
   data() {
     return {
-      username: sessionStorage.getItem("username"),
+      username: localStorage.getItem("username"),
       parameters: [],
       selected: '',
 
@@ -127,8 +127,8 @@ export default {
 
   async mounted() {
 
-    axios.get(urlAPI+'User/'+this.username)
-        .then(response => (this.data = response.data))
+    axios.get(urlAPI+'User/' + this.username)
+    .then(response => (this.data = response.data))
 
     await this.resolveAfter15Second();
 

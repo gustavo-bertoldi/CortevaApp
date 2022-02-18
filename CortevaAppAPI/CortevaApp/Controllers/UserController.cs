@@ -4,9 +4,15 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using CortevaApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CortevaApp.Controllers
 {
@@ -20,6 +26,7 @@ namespace CortevaApp.Controllers
             _configuration = configuration;
         }
 
+        [Authorize]
         [HttpGet("user/{username}")]
         public JsonResult GetUserInfo(string username)
         {
@@ -96,7 +103,67 @@ namespace CortevaApp.Controllers
             return new JsonResult(data);
         }
 
-      
+        [AllowAnonymous]
+        [HttpPost("login")]
+        public IActionResult Login(User user)
+        {
+            string UserAuthQuery = @"select count(*) as auth
+                                   from dbo.users u
+                                   where u.login = @username and u.password = @password";
+
+
+            DataTable UserAuth = new DataTable();
+
+            string sqlDataSource = _configuration.GetConnectionString("CortevaDBConnection");
+            SqlDataReader reader;
+            using (SqlConnection connection = new SqlConnection(sqlDataSource))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(UserAuthQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@username", user.login);
+                    command.Parameters.AddWithValue("@password", user.password);
+                    reader = command.ExecuteReader();
+                    UserAuth.Load(reader);
+                    reader.Close();
+                }
+
+                connection.Close();
+            }
+
+            int result = int.Parse(UserAuth.Rows[0]["auth"].ToString());
+
+            if (result > 0)
+            {
+                var tokenString = GenerateJWT(user);
+                return Ok(new { token = tokenString });
+            } else
+            {
+                return Unauthorized();
+            }
+        }
+
+        private string GenerateJWT(User user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var ExpDate = DateTime.UtcNow.AddMinutes(720);
+            var claims = new[]
+            {
+                new Claim("login", user.login)
+            };
+
+            var token = new JwtSecurityToken(_configuration["Jwt:Issuer"],
+              _configuration["Jwt:Issuer"],
+              claims,
+              expires: ExpDate,
+              signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        } 
+
+
 
     }
 }
