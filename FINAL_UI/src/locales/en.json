@@ -48,8 +48,7 @@
   "quality" : "Quality",
   "filler" : "Filler",
   "caper" : "Caper",
-  "labeller" : "Labeller",
-  "bowWeigher" : "Box weigher",
+  "labeler" : "Labeler",
   "counter" : "Counter",
   "rejection" : "Rejection",
   "summary" : "Summary",
@@ -189,6 +188,20 @@
   "rejectedItems" : "Rejected items",
   "boxWeigher" : "Box weigher",
   "weightBox" : "Box weigher",
-  "labeler" : "Labeler"
+  "InvolvedMachine" : "Involved Machine",
+  "depalletizer" : "Depalletizer",
+  "palletizer" : "Palletizer",
+  "casePacker" : "Case Packer",
+  "caseSealer" : "Case Sealer",
+  "bottleApplicator" : "Bottle Applicator",
+  "caseFormer" : "Case Former",
+  "qualityLossesNDescription" :  "N = Produced Pieces in Specification during the production run",
+  "qualityLossesMiDescription" :  "RMi, RF = Rejected Pieces at the Filler or machines Mi",
+  "qualityLossesCiDescription" :  " CMi = Machine counter value at end of production run"
+
+
+
+
+
 
 }

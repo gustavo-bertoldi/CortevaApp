@@ -156,6 +156,8 @@
 <script>
 import {default as axios} from "axios";
 import {urlAPI} from "@/variables";
+import LeaderLine from 'leader-line-new';
+
 
 export default {
   name: "PackaginglineID",
@@ -189,6 +191,8 @@ export default {
 
     load: async function () {
       var index = 0;
+      var tableauMachine = [];
+
       for (let i = 0; i < this.dataProductionlines.length; i++) {
 
         if (this.dataProductionlines[i].productionline_name === this.productionline) {
@@ -216,12 +220,13 @@ export default {
       var insert = document.getElementById("flowDiagram");
       var previousMachine = this.machines[0][0];
       var div = document.createElement("div");
+      div.setAttribute("id", previousMachine.name);
       var h5 = document.createElement("h5");
       h5.innerHTML = previousMachine.denomination_ordre;
       h5.setAttribute("style", "padding-top:15px;");
-      h5.setAttribute("id", previousMachine.name);
+      //h5.setAttribute("id", previousMachine.name);
       div.appendChild(h5);
-      div.setAttribute("class", "machine");
+      div.setAttribute("class", "machine col-sm");
       div.setAttribute("style", "color:white; background-color: lightblue; height: 50px; margin-bottom: 30px;");
       div.setAttribute("align", "center");
 
@@ -231,7 +236,7 @@ export default {
         var R = document.createElement("h5");
         R.innerHTML = "R";
         R.setAttribute("style", "padding-top:15px;");
-        R.setAttribute("id", "rejection_" + previousMachine.name);
+        //R.setAttribute("id", "rejection_" + previousMachine.name);
 
 
         rejection.append(R);
@@ -242,32 +247,29 @@ export default {
 
         row.appendChild(rejection);
 
-
-        var redArrow = document.createElement("connection");
-        redArrow.setAttribute("from", "#" + previousMachine.name);
-        redArrow.setAttribute("to", "#rejection_" + previousMachine.name);
-        redArrow.setAttribute("color", "red");
-        redArrow.setAttribute("tail", "true");
-        redArrow.setAttribute("style", "padding-top:15px;");
-
-
-        insert.appendChild(redArrow);
-
-
       }
 
 
       row.appendChild(div);
       insert.appendChild(row);
+      if (previousMachine.rejection === 1) {
+        new LeaderLine(
+            document.getElementById(previousMachine.name),
+            document.getElementById("rejection_" + previousMachine.name),
+            {color: 'red'}
+        );
+      }
+
+      tableauMachine.push(previousMachine.ordre);
 
       for (let i = 1; i < this.machines[0].length; i++) {
 
         var machine = this.machines[0][i];
+        tableauMachine.push(machine.ordre);
 
         row = document.createElement("div");
         row.setAttribute("class", "row");
         row.setAttribute("style", "margin: 30px;height: 50px; height: 50px;");
-
 
         div = document.createElement("div");
         h5 = document.createElement("h5");
@@ -275,18 +277,11 @@ export default {
         h5.setAttribute("style", "padding-top:15px;");
 
         div.appendChild(h5);
-        h5.setAttribute("id", machine.name);
+        //h5.setAttribute("id", machine.name);
         div.setAttribute("class", "machine col-sm");
         div.setAttribute("style", "color:white; background-color: lightblue; ");
         div.setAttribute("align", "center");
-
-
-        var arrow = document.createElement("connection");
-        arrow.setAttribute("from", "#" + previousMachine.name);
-        arrow.setAttribute("to", "#" + machine.name);
-        arrow.setAttribute("color", "black");
-        arrow.setAttribute("tail", "true");
-        arrow.setAttribute("style", "padding-top:15px;");
+        div.setAttribute("id", machine.name);
 
 
         row.appendChild(div);
@@ -307,21 +302,24 @@ export default {
           row.appendChild(rejection);
 
 
-          redArrow = document.createElement("connection");
-          redArrow.setAttribute("from", "#" + machine.name);
-          redArrow.setAttribute("to", "#rejection_" + machine.name);
-          redArrow.setAttribute("color", "red");
-          redArrow.setAttribute("tail", "true");
-          redArrow.setAttribute("style", "padding-top:15px;");
-
-          insert.appendChild(redArrow);
-
 
         }
 
-
         insert.appendChild(row);
-        insert.appendChild(arrow);
+
+        new LeaderLine(
+            document.getElementById(previousMachine.name),
+            document.getElementById(machine.name),
+            {color: 'red'}
+        );
+
+        if (machine.rejection === 1) {
+          new LeaderLine(
+              document.getElementById(machine.name),
+              document.getElementById("rejection_" + machine.name),
+              {color: 'red'}
+          );
+        }
 
         previousMachine = machine;
 
@@ -329,6 +327,7 @@ export default {
       }
 
       this.show = 1;
+      console.log(tableauMachine);
 
     },
   },

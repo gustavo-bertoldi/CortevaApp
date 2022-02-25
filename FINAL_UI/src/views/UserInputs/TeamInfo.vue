@@ -234,7 +234,7 @@ export default {
             console.log(element);
 
 
-            axios.post(urlAPI + 'PO/createpo', {
+            axios.put(urlAPI + 'PO/insertPO/PO', {
               number: number,
               GMIDCode: dcodesTab[i],
               productionline_name: this.userWorksite.worksite_name

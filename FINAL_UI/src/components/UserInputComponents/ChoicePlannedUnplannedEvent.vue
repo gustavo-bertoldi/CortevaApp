@@ -40,7 +40,7 @@
         </tr>
         </thead>
         <tbody>
-          <tr v-for="event in eventsPerProductionline[productionName]" :key="event.id">
+          <tr v-for="event in arrayEvents" :key="event.id">
             <th scope="row">{{$t(event.type)}}</th>
             <td>{{event.updated_at.split(' ')[1]}}</td>
             <td>{{event.total_duration}}</td>
@@ -81,6 +81,7 @@ export default {
 
       eventsPerProductionline: [],
       eventsUser: null,
+      arrayEvents : null,
 
     }
   },
@@ -133,12 +134,17 @@ export default {
 
 
 
+
       for (let j = 0; j < this.eventsUser.length; j++) {
         for (let k = 0; k < this.eventsUser[j].length; k++) {
           this.eventsPerProductionline[this.productionlines[i]].push(this.eventsUser[j][k]);
         }
       }
+
     }
+    console.log(this.eventsPerProductionline);
+    this.arrayEvents = this.eventsPerProductionline[this.productionName];
+
 
 
   }

@@ -146,7 +146,7 @@ namespace CortevaApp.Controllers
             return new JsonResult(NewAssignement);
         }
 
-        [HttpPost("PO")]
+        [HttpPut("PO/insertPO/PO")]
         public JsonResult CreatePO(PO po)
         {
             string QueryNewPO = @"insert into dbo.ole_pos (number, GMIDCode, productionline_name)
@@ -175,8 +175,8 @@ namespace CortevaApp.Controllers
             return new JsonResult(NewPO);
         }
 
-        [HttpPost("stopPO/{PO}/{availability}/{performance}/{quality}/{OLE}/{quantityProduced}/{totalDuration}")]
-        public JsonResult StopPO(string po, double availability, double performance, double quality, double OLE, int quantityProduced, int totalDuration)
+        [HttpPost("stopPO/{PO}/{availability}/{performance}/{quality}/{OLE}/{quantityProduced}/{totalDuration}/{totalOperatingTime}/{totalNetOperatingTime}")]
+        public JsonResult StopPO(string po, double availability, double performance, double quality, double OLE, int quantityProduced, int totalDuration, int totalOT, int totalNetOT)
         {
             string QueryStopPO = @"update dbo.ole_pos
                                    set state = 0,
@@ -185,7 +185,9 @@ namespace CortevaApp.Controllers
                                    quality = @Quality,
                                    OLE = @OLE,
                                    qtyProduced = @QuantityProduced,
-                                   workingDuration = @TotalDuration
+                                   workingDuration = @TotalDuration,
+                                   totalOperatingTime = @totalOT,
+                                   totalNetOperatingTime = @totalNetOT
                                    where number = @PO";
 
 
@@ -204,6 +206,8 @@ namespace CortevaApp.Controllers
                     command.Parameters.AddWithValue("@OLE", OLE);
                     command.Parameters.AddWithValue("@QuantityProduced", quantityProduced);
                     command.Parameters.AddWithValue("@TotalDuration", totalDuration);
+                    command.Parameters.AddWithValue("@totalOT", totalOT);
+                    command.Parameters.AddWithValue("@totalNetOT", totalNetOT);
                     command.Parameters.AddWithValue("@PO", po);
                     reader = command.ExecuteReader();
                     StopPO.Load(reader);

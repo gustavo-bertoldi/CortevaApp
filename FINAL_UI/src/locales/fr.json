@@ -48,8 +48,7 @@
   "quality" : "Qualité",
   "filler" : "Remplisseuse",
   "caper" : "Visseuse",
-  "labeller" : "Etiqueteuse",
-  "bowWeigher" : "Poids des caisses",
+  "labeler" : "Etiqueteuse",
   "counter" : "Compteur",
   "rejection" : "Rejet",
   "summary" : "Récapitulatif",
@@ -188,5 +187,15 @@
   "rejectedItems" : "Produits rejetés",
   "boxWeigher" : "Peseur de caisse",
   "weightBox" : "Peseur de caisse",
-  "labeler" : "Etiquetteur"
+  "InvolvedMachine" : "Machine Impliquée",
+  "depalletizer" : "Dépaletiseur",
+  "palletizer" : "Palettiseur",
+  "casePacker" : "Encaisseuse",
+  "caseSealer" : "Scelleur de caisse",
+  "bottleApplicator" : "Applicateur bouteille",
+  "caseFormer" : "Formeur de caisse",
+  "qualityLossesNDescription" :  "N = Nombre de pièces produites spécifiquement lors de la production",
+  "qualityLossesMiDescription" :  "RMi, RF = Pièces rejetées à la remplisseuse ou à la machine Mi",
+  "qualityLossesCiDescription" :  "CMi = Valeur du compteur de la machine à la fin de la production"
+
 }

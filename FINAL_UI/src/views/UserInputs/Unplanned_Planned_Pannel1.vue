@@ -1,7 +1,9 @@
 <template>
   <div class="">
     <navbar-saisie></navbar-saisie>
-    <ChoiceUnplannedPlanned></ChoiceUnplannedPlanned>
+    <div class="container">
+      <ChoiceUnplannedPlanned></ChoiceUnplannedPlanned>
+    </div>
   </div>
 </template>
 

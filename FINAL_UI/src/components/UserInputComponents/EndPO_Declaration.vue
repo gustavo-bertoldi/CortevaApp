@@ -225,7 +225,7 @@
             <th scope="col"></th>
             <th scope="col">{{$t("filler")}}</th>
             <th scope="col">{{$t("caper")}}</th>
-            <th scope="col">{{$t("labeller")}}</th>
+            <th scope="col">{{$t("labeler")}}</th>
             <th scope="col">{{$t("boxWeigher")}}</th>
             <th scope="col">{{$t("qualityControl")}}</th>
 
@@ -510,6 +510,8 @@ export default {
 
       totalProductionTime: 0,
 
+      totalSpeedLosses : 0,
+
       totalPOQuality: 0,
 
       endPO: 0,
@@ -575,6 +577,7 @@ export default {
       console.log(document.getElementById('endingPO').value);
 
 
+
       var splitted1 = this.startPO.toString().split(':');
       var splitted2 = this.endPO.toString().split(':');
 
@@ -612,18 +615,31 @@ export default {
       } else {
         this.totalProductionTime -= (this.totalPlannedDowtimes);
         this.totalOperatingTime = this.totalProductionTime - this.totalUnplannedDowtimes;
+
         this.availability = (this.totalOperatingTime / this.totalProductionTime).toFixed(2);
 
 
         //this.$store.dispatch('getNetOPTime', this.parameters);
+
+        this.nbBottlesFilled = this.finalQuantityProduced * this.netOP[0].bottlesPerCase;
+        this.normalRate = this.netOP[0].bottlesPerCase * this.netOP[0].idealRate;
+
+        this.totalNetOperatingTime = this.totalOperatingTime - this.totalSpeedLosses;
+
+        console.log('OP time' + this.totalOperatingTime);
+        console.log('NET OP : ' + this.totalNetOperatingTime);
+        console.log(this.nbBottlesFilled);
         console.log(this.netOP);
 
-        this.nbBottlesFilled = this.finalQuantityProduced * this.netOP.bottlesPerCase;
 
-        var numerateur = this.nbBottlesFilled / this.netOP.idealRate;
+        console.log(this.speedLoss);
 
-        console.log('NET OP : ' + this.totalNetOperatingTime);
+        var numerateur = this.nbBottlesFilled / this.netOP[0].idealRate;
 
+        console.log(this.nbBottlesFilled);
+        console.log(this.netOP);
+        console.log(numerateur);
+        //this.performance = (this.nbBottlesFilled / this.normalRate).toFixed(2);
         this.performance = (numerateur / this.totalOperatingTime).toFixed(2);
 
 
@@ -654,16 +670,17 @@ export default {
         this.quality = 1;
       } else {
         var N = this.nbBottlesFilled;
-        var summRejection = this.FillerRejection + this.CaperRejection +
-            this.EtiqueteuseRejection + this.WieghtBoxRejection*this.netOP.bottlesPerCase + this.QualityControlRejection;
+        var summRejection = this.FillerRejection*1 + this.CaperRejection*1 +
+            this.EtiqueteuseRejection*1 + this.WieghtBoxRejection*this.netOP[0].bottlesPerCase + this.QualityControlRejection*1;
 
         var summCompteur = 0;
+
         if (this.FillerCounter !== 0) {
           summCompteur += (this.FillerCounter - N);
           console.log('ICI1 : ' + summCompteur);
-
-
         }
+
+
         if (this.CaperCounter !== 0) {
           summCompteur += (this.CaperCounter - N);
           console.log('ICI2 : ' + summCompteur);
@@ -673,18 +690,16 @@ export default {
         if (this.EtiqueteuseCounter !== 0) {
           summCompteur += (this.EtiqueteuseCounter - N);
           console.log('ICI3 : ' + summCompteur);
-
         }
 
         if (this.QualityControlCounter !== 0) {
-
           summCompteur += (this.QualityControlCounter - N);
           console.log('ICI4 : ' + summCompteur);
-
-
         }
+
+
         if (this.WieghtBoxCounter !== 0) {
-          summCompteur += (this.WieghtBoxCounter*this.netOP.bottlesPerCase - N);
+          summCompteur += (this.WieghtBoxCounter*this.netOP[0].bottlesPerCase - N);
           console.log('ICI5 : ' + summCompteur);
 
         }
@@ -693,7 +708,7 @@ export default {
         console.log('NB BOUTEILLES : ' + N);
         console.log('NB BOUTEILLES REJ : ' + summRejection);
         console.log('NB BOUTEILLES COUNT : ' + summCompteur);
-        //
+
         this.quality = (N / (N + summRejection + summCompteur)).toFixed(2);
       }
       this.OLE = (this.quality * this.availability * this.performance).toFixed(2);
@@ -738,41 +753,28 @@ export default {
 
 
       await axios.post(urlAPI+'stopPO/'+this.endPO+'/'+this.availability+'/'+this.performance+'/'+this.quality+'/'+
-          this.OLE+'/'+this.finalQuantityProduced+'/'+this.totalDuration);
+          this.OLE+'/'+this.finalQuantityProduced+'/'+this.totalDuration+ +'/'+this.totalOperatingTime + '/'+this.totalNetOperatingTime );
 
       await this.resolveAfter1Second();
 
-      var array2 = [];
-      array2.push(this.endPO);
-      array2.push(this.EtiqueteuseCounter);
-      array2.push(this.WieghtBoxCounter*this.netOP.bottlesPerCase);
-      array2.push(this.CaperCounter);
-      array2.push(this.FillerCounter);
-      array2.push(this.EtiqueteuseRejection);
-      array2.push(this.WieghtBoxRejection*this.netOP.bottlesPerCase);
-      array2.push(this.CaperRejection);
-      array2.push(this.FillerRejection);
-      array2.push(this.QualityControlCounter);
-      array2.push(this.QualityControlRejection);
 
-      var rejection =  {
+      await axios.post(urlAPI+'storeRejection', {
         po: this.endPO,
         fillerCounter: this.FillerCounter,
         caperCounter: this.CaperCounter,
         labelerCounter: this.EtiqueteuseCounter,
-        weightBoxCounter: this.WieghtBoxCounter*this.netOP.bottlesPerCase,
+        weightBoxCounter: this.WieghtBoxCounter*this.netOP[0].bottlesPerCase,
         qualityControlCounter : this.QualityControlCounter,
         fillerRejection : this.FillerRejection,
         caperRejection : this.CaperRejection,
         labelerRejection : this.EtiqueteuseRejection,
-        weightBoxRejection : this.WieghtBoxRejection*this.netOP.bottlesPerCase,
+        weightBoxRejection : this.WieghtBoxRejection*this.netOP[0].bottlesPerCase,
         qualityControlRejection : this.QualityControlRejection
-      };
-
-
-      await axios.post(urlAPI+'storeRejection', rejection);
+      });
 
       await this.resolveAfter1Second();
+
+      router.replace("/teamInfo");
 
 
 
@@ -879,6 +881,11 @@ export default {
 
     await axios.get(urlAPI + 'speedLosses/' + poNumber + '/' + this.productionName)
         .then(response => (this.speedLoss = response.data))
+
+    console.log(this.speedLoss);
+    for(let i=0; i<this.speedLoss.length; i++){
+      this.totalSpeedLosses += this.speedLoss[i].duration;
+    }
 
     await axios.get(urlAPI + 'netOP/' + this.GMID)
         .then(response => (this.netOP = response.data))

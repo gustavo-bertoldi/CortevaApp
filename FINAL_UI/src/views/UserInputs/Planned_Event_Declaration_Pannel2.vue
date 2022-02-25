@@ -1,7 +1,9 @@
 <template>
 <div>
   <navbar-saisie></navbar-saisie>
-  <PlannedEvent_Pannel2></PlannedEvent_Pannel2>
+  <div class="container">
+    <PlannedEvent_Pannel2></PlannedEvent_Pannel2>
+  </div>
 </div>
 </template>
 

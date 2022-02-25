@@ -192,6 +192,7 @@ export default {
 
       console.log(this.Planned_Event);
       router.replace("/eventDeclaration/"+this.productionName+"/plannedDowntime");
+      window.location.reload();
 
     },
 

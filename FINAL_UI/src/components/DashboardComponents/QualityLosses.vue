@@ -86,17 +86,19 @@
     <div class="row">
       <div class="col-sm border border-primary" style="padding-left : 50px;">
         <p>
-          N = Produced Pieces in Specification during the production run <br/>
-          RMi, RF = Rejected Pieces at the Filler or machines Mi <br/>
-          CMi = Machine counter value at end of production run
+          {{$t("qualityLossesNDescription")}}
+          <br/>
+          {{$t("qualityLossesMiDescription")}}
+          <br/>
+          {{$t("qualityLossesCiDescription")}}
         </p>
       </div>
       <div class="col-sm border border-primary">
         <p>
-          M1 = telle machine <br/>
-          M2 = telle machine <br/>
-          M3 = telle machine <br/>
-          M4 = telle machine <br/>
+          M1 = {{$t("labeler")}} <br/>
+          M2 = {{$t("caper")}}  <br/>
+          M3 = {{$t("qualityControl")}}  <br/>
+          M4 = {{$t("boxWeigher")}}  <br/>
 
         </p>
       </div>

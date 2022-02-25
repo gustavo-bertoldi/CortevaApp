@@ -123,18 +123,18 @@ export default {
           var sommePlannedEvents = 0;
           var sommeUnplannedEvents = 0;
 
+          console.log(this.eventsUser);
+
 
           for (let i = 0; i < this.eventsUser.length; i++) {
-
-            if (this.eventsUser[i].productionline === this.productionlines[indice / this.productionlines.length]) {
-
-
-              if (this.eventsUser[i].kind === 0) {
-                sommePlannedEvents += this.eventsUser[i].total_duration;
-              } else {
-                sommeUnplannedEvents += this.eventsUser[i].total_duration;
+            for(let j=0; j<this.eventsUser[i].length; j++) {
+              if (this.eventsUser[i][j].productionline === this.productionlines[indice / this.productionlines.length]) {
+                if (this.eventsUser[i][j].kind === 0) {
+                  sommePlannedEvents += this.eventsUser[i][j].total_duration;
+                } else {
+                  sommeUnplannedEvents += this.eventsUser[i][j].total_duration;
+                }
               }
-
             }
           }
 

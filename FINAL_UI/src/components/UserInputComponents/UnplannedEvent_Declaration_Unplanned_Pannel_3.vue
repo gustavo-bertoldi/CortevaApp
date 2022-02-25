@@ -4,7 +4,7 @@
 
     <div align="center" class="productionName rcorners2">
 
-      {{$t(title)}}
+      {{title}}
 
     </div>
 
@@ -33,7 +33,7 @@
             <button
                 class="btn btn-primary border-info btn-lg btn-block align-items-center btn-info"
                 type="button" @click.prevent="addComments(machine.name)">
-              {{machine.name}}
+              {{$t(machine.name)}}
             </button>
 
           </div>
@@ -173,7 +173,7 @@ export default {
 
       if(otherMachine  === 1){
         this.previousTitle = this.title;
-        this.title = 'Machine impliquée';
+        this.title = 'InvolvedMachine';
         this.printedStep = 1;
       }else{
         this.previousTitle = this.title;

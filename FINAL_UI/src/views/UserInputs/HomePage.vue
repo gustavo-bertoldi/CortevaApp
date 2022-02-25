@@ -1,8 +1,11 @@
 <template>
   <div class="home">
     <navbar-saisie></navbar-saisie>
+    <div class="container">
+
     <top-home-page-user></top-home-page-user>
     <bottom-home-page-user></bottom-home-page-user>
+    </div>
   </div>
 
 
