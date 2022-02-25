@@ -8,11 +8,13 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using CortevaApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CortevaApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class MachineComponentController : ControllerBase
     {
 
